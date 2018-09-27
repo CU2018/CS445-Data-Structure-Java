@@ -1,0 +1,35 @@
+// pseudo code
+// 这个方法应该叫 对给定pattern从curr节点往后都好使， 简称rightForNowAndTheRest = rf()
+
+private boolean rf (int patternIndex, CNode currNode, String[] patterns, MyStringBuilder2[] matches) // 方法定义
+
+所以在外圈循环的时候调用应该是： rf(0, startNode, patterns, matches) 
+index 从0开始，startNode就是给定的开始点，matches[]的每一个item都是empty的
+调用的结果是：
+	如果返回值是true，说明startNode开始是有匹配的，结果会在matches里面，
+	如果返回值是false，说明startNode开始没有匹配，matches会还原成每一个item都是empty的
+
+成功定义：最后一个matches的长度不为0
+
+
+对于每一次调用来说：
+
+if (currNode == null) // base case 1: 当前节点为空
+	if 成功
+		return true;
+	else 
+		return false;
+else if 当前节点不符合给定pattern // base case 2：不符合pattern
+	if 成功
+		return true;
+	else 
+		return false;
+else 当前节点符合pattern // recursive case
+	把节点放到对应的matches里面；
+	if (rf(下个节点当前pattern)) // 注意这里的意思不仅仅是下个节点成功了，是从下个节点开始都成功了直到base case
+		return true;
+	else if rf(下个节点下个pattern) // 之前的尝试没有结果没关系，还有机会，如果这里成功了就说明到base case都成功了
+		return true;
+	else // 这里表明虽然当前节点可以符合给定pattern，但是下个节点怎么也不能符合，只能返回false，告诉上一层这样放是不行的，这里就是backtracking
+		把节点从对应的matches取出来，因为是错的
+		return false;
